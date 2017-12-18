@@ -1,0 +1,153 @@
+{
+	"plugin_id":"imprimantehp",
+	"name_fr": "Imprimante HP",
+	"icon":"imprimante_hp.png",
+	"version":"1.01",
+	"creation_date":"2017-12-18",
+	"modification_date":"2017-12-18",
+	"author":"<a href='https://github.com/DamienLGD/HP_eedomus' target='_blank'>Xianghua<img src='/img/external.png'></a>",
+	"description_fr":"Plugin pour visualiser sa consommation sur les cartouches ou le nombre de pages imprimées<br>Fonctionne avec les Photosmart et Officejet. Si c'est une Officejet il faudra supprimer le périphérique noir photo",
+	"description_en":"Plugin for hp printer. Works with Photosmart and Officejet.<br>You have to delete black photo device if you have a Photosmart printer",
+	"description_es": "",
+	"description_it": "",
+	"description_de": "",
+	"forum_link": "http://forum.eedomus.com/viewtopic.php?f=15&t=2913",
+"parameters":
+[
+	{
+		"parameter": "IP", 
+		"description": "Adresse IP",
+		"xtype": "textfield",
+		"default_value": "",
+		"field": "width:130, allowBlank:false, maskRe:/[0-9.]/, regex:/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/,  regexText:'Adresse IP invalide [0-255].[0-255].[0-255].[0-255]'"
+	}
+],
+	"devices":
+[
+	{
+		"device_id":"printpage",
+		"module_id":"51",
+		"type":"http",
+		"name_fr":"Imprimante - Pages",
+		"name_en":"Printer - Pages",
+		"icon":"imprimante_hp.png",
+		"utilisation_id":"35",
+		"value_unit": "pages", 
+		"parameters":
+		{
+			"VAR1": "plugin.parameters.IP",
+			"value_type":"float",
+			"ignore_errors":3,
+			"RAW_URL":"http://[VAR1]/DevMgmt/ProductUsageDyn.xml",
+			"RAW_XPATH":"/pudyn:ProductUsageDyn/pudyn:PrinterSubunit/dd:TotalImpressions",
+			"POLLING":"30",
+			"convert": 0
+		}
+	},
+	{
+		"device_id":"black",
+		"parent_id": "printpage",
+		"module_id":"51",
+		"type":"http",
+		"name_fr":"Imprimante - Cartouche noire",
+		"name_en":"Printer - Black",
+		"icon":"imprimante_hp.png",
+		"utilisation_id":"35",
+		"value_unit": "%", 
+		"parameters":
+		{
+			"VAR1": "plugin.parameters.IP",
+			"value_type":"float",
+			"ignore_errors":3,
+			"RAW_URL":"http://[VAR1]/DevMgmt/ProductUsageDyn.xml",
+			"RAW_XPATH":"/pudyn:ProductUsageDyn/pudyn:ConsumableSubunit/pudyn:Consumable[dd:MarkerColor='Black']/dd:ConsumableRawPercentageLevelRemaining",
+			"POLLING":"30",
+			"convert": 0
+		}
+	},
+	{
+		"device_id":"yellow",
+		"parent_id": "printpage",
+		"module_id":"51",
+		"type":"http",
+		"name_fr":"Imprimante - Cartouche jaune",
+		"name_en":"Printer - Yellow",
+		"icon":"imprimante_hp.png",
+		"utilisation_id":"35",
+		"value_unit": "%", 
+		"parameters":
+		{
+			"VAR1": "plugin.parameters.IP",
+			"value_type":"float",
+			"ignore_errors":3,
+			"RAW_URL":"http://[VAR1]/DevMgmt/ProductUsageDyn.xml",
+			"RAW_XPATH":"/pudyn:ProductUsageDyn/pudyn:ConsumableSubunit/pudyn:Consumable[dd:MarkerColor='Yellow']/dd:ConsumableRawPercentageLevelRemaining",
+			"POLLING":"30",
+			"convert": 0
+		}
+	},
+	{
+		"device_id":"cyan",
+		"parent_id": "printpage",
+		"module_id":"51",
+		"type":"http",
+		"name_fr":"Imprimante - Cartouche cyan",
+		"name_en":"Printer - Cyan",
+		"icon":"imprimante_hp.png",
+		"utilisation_id":"35",
+		"value_unit": "%", 
+		"parameters":
+		{
+			"VAR1": "plugin.parameters.IP",
+			"value_type":"float",
+			"ignore_errors":3,
+			"RAW_URL":"http://[VAR1]/DevMgmt/ProductUsageDyn.xml",
+			"RAW_XPATH":"/pudyn:ProductUsageDyn/pudyn:ConsumableSubunit/pudyn:Consumable[dd:MarkerColor='Cyan']/dd:ConsumableRawPercentageLevelRemaining",
+			"POLLING":"30",
+			"convert": 0
+		}
+	},
+	{
+		"device_id":"magenta",
+		"parent_id": "printpage",
+		"module_id":"51",
+		"type":"http",
+		"name_fr":"Imprimante - Cartouche Magenta",
+		"name_en":"Printer - Magenta",
+		"icon":"imprimante_hp.png",
+		"utilisation_id":"35",
+		"value_unit": "%", 
+		"parameters":
+		{
+			"VAR1": "plugin.parameters.IP",
+			"value_type":"float",
+			"ignore_errors":3,
+			"RAW_URL":"http://[VAR1]/DevMgmt/ProductUsageDyn.xml",
+			"RAW_XPATH":"/pudyn:ProductUsageDyn/pudyn:ConsumableSubunit/pudyn:Consumable[dd:MarkerColor='Magenta']/dd:ConsumableRawPercentageLevelRemaining",
+			"POLLING":"30",
+			"convert": 0
+		}
+	},
+	{
+		"device_id":"blackphoto",
+		"parent_id": "printpage",
+		"module_id":"51",
+		"type":"http",
+		"name_fr":"Imprimante - Cartouche noire photo",
+		"name_en":"Printer - Black photo",
+		"icon":"imprimante_hp.png",
+		"utilisation_id":"35",
+		"value_unit": "%", 
+		"parameters":
+		{
+			"VAR1": "plugin.parameters.IP",
+			"value_type":"float",
+			"ignore_errors":3,
+			"RAW_URL":"http://[VAR1]/DevMgmt/ProductUsageDyn.xml",
+			"RAW_XPATH":"/pudyn:ProductUsageDyn/pudyn:ConsumableSubunit/pudyn:Consumable[dd:MarkerColor='PhotoBlack']/dd:ConsumableRawPercentageLevelRemaining",
+			"POLLING":"30",
+			"convert": 0
+		}
+	}
+]
+}
